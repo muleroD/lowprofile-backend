@@ -1,12 +1,13 @@
 package br.coom.muler.resource;
 
 import br.coom.muler.entity.Login;
+import br.coom.muler.service.LoginService;
 
+import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.net.URI;
 import java.util.List;
 
 @Path("/auth")
@@ -14,66 +15,43 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 public class LoginResource {
 
+    @Inject
+    LoginService service;
+
     @GET
     public List<Login> list() {
-        return Login.listAll();
+        return service.listAll();
     }
 
     @GET
     @Path("/{id}")
     public Login getById(@PathParam("id") Long id) {
-        return Login.findById(id);
+        return service.getById(id);
     }
 
     @POST
     @Transactional
     public Response create(Login login) {
-        login.persist();
-        return Response.created(URI.create("/auth/" + login.id)).build();
+        return service.create(login);
     }
 
     @PUT
     @Path("/{id}")
     @Transactional
     public Login update(@PathParam("id") Long id, Login body) {
-        Login entity = Login.findById(id);
-
-        if (entity == null)
-            throw new NotFoundException();
-
-        entity.email = body.email;
-        entity.password = body.password;
-
-        return entity;
+        return service.updateById(id, body);
     }
 
     @DELETE
     @Transactional
     @Path("/{id}")
     public void delete(@PathParam("id") Long id) {
-        Login entity = Login.findById(id);
-
-        if (entity == null)
-            throw new NotFoundException();
-
-        entity.delete();
+        service.deleteById(id);
     }
 
     @GET
     @Path("/search/{email}")
     public Login search(@PathParam("email") String email) {
-        Login entity = Login.findByEmail(email);
-
-        if (entity == null)
-            throw new NotFoundException();
-
-        return entity;
+        return service.findByEmail(email);
     }
-
-    @GET
-    @Path("/count")
-    public Long count() {
-        return Login.count();
-    }
-
 }
