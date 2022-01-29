@@ -1,0 +1,12 @@
+version: "3.7"
+services:
+  mysql-clean-quarkus:
+    image: mysql:8.0
+    container_name: low-profile-mysql
+    environment:
+      - MYSQL_DATABASE=lowprofile
+      - MYSQL_ROOT_PASSWORD=quarkus
+      - MYSQL_USER=lowprofile
+      - MYSQL_PASSWORD=lowprofile
+    ports:
+      - "3306:3306"

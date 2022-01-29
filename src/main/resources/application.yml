@@ -1,2 +1,14 @@
+quarkus:
+  datasource:
+    db-kind: mysql
+    username: lowprofile
+    password: lowprofile
+    jdbc.url: jdbc:mysql://localhost:3306/lowprofile
+
+  hibernate-orm:
+    database:
+      generation: drop-and-create
+
 greeting:
   message: "hello"
+
