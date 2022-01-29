@@ -3,7 +3,8 @@ quarkus:
     db-kind: mysql
     username: lowprofile
     password: lowprofile
-    jdbc.url: jdbc:mysql://localhost:3306/lowprofile
+    jdbc:
+      url: jdbc:mysql://localhost:3306/lowprofile
 
   hibernate-orm:
     database:
