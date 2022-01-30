@@ -30,6 +30,7 @@ public class LoginResource {
     }
 
     @POST
+    @Path("/register")
     @Transactional
     public Response create(Login login) {
         return service.create(login);
