@@ -20,7 +20,7 @@ public class Login extends PanacheEntity {
     @Password
     public String password;
     @Roles
-    public String roles;
+    public String role;
 
     public static Optional<Login> findByEmail(String email) {
         return find("email", email).firstResultOptional();
@@ -28,9 +28,11 @@ public class Login extends PanacheEntity {
 
     public static void save(Login login) {
         Login entity = new Login();
+
         entity.email = login.email;
         entity.password = BcryptUtil.bcryptHash(login.password);
-        entity.roles = Profile.USER.name();
+        entity.role = Profile.valueOf(login.role).name();
+
         entity.persist();
     }
 }

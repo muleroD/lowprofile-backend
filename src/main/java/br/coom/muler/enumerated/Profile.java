@@ -1,5 +1,8 @@
 package br.coom.muler.enumerated;
 
 public enum Profile {
-    USER
+    USER, ADMIN;
+
+    public static final String _USER = "USER";
+    public static final String _ADMIN = "ADMIN";
 }
