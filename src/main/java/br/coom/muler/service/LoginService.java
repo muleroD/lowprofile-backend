@@ -1,11 +1,14 @@
 package br.coom.muler.service;
 
+import br.coom.muler.dto.CreateLoginDTO;
 import br.coom.muler.entity.Login;
 import br.coom.muler.enumerated.Profile;
+import io.quarkus.security.identity.SecurityIdentity;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
 import java.util.Optional;
 
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
@@ -13,7 +16,10 @@ import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 @ApplicationScoped
 public class LoginService {
 
-    public Response register(SecurityContext securityContext, Login body) {
+    @Inject
+    SecurityIdentity identity;
+
+    public Response register(@Valid CreateLoginDTO body) {
         Optional<Login> entity = Login.findByEmail(body.email);
 
         if (entity.isPresent())
@@ -22,8 +28,8 @@ public class LoginService {
                     .entity("E-mail já cadastrado")
                     .build();
 
-        if (!securityContext.isUserInRole(Profile._ADMIN))
-            body.role = Profile._USER;
+        if (!identity.hasRole(Profile._ADMIN))
+            body.role = Profile.USER;
 
         Login.save(body);
 

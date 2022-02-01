@@ -1,6 +1,6 @@
 package br.coom.muler.resource;
 
-import br.coom.muler.entity.Login;
+import br.coom.muler.dto.CreateLoginDTO;
 import br.coom.muler.enumerated.Profile;
 import br.coom.muler.service.LoginService;
 
@@ -8,11 +8,10 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
 
 @Path("/auth")
 @Produces(MediaType.APPLICATION_JSON)
@@ -26,8 +25,8 @@ public class LoginResource {
     @Path("/register")
     @PermitAll
     @Transactional
-    public Response register(@Context SecurityContext securityContext, Login login) {
-        return service.register(securityContext, login);
+    public Response register(@Valid CreateLoginDTO login) {
+        return service.register(login);
     }
 
     @DELETE
