@@ -26,7 +26,7 @@ public class Login extends PanacheEntity {
         return find("email", email).firstResultOptional();
     }
 
-    public static void save(CreateLoginDTO login) {
+    public static Login save(CreateLoginDTO login) {
         Login entity = new Login();
 
         entity.email = login.email;
@@ -34,5 +34,7 @@ public class Login extends PanacheEntity {
         entity.role = login.role.name();
 
         entity.persist();
+
+        return entity;
     }
 }

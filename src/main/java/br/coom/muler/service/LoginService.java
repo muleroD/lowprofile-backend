@@ -2,12 +2,12 @@ package br.coom.muler.service;
 
 import br.coom.muler.dto.CreateLoginDTO;
 import br.coom.muler.entity.Login;
+import br.coom.muler.entity.User;
 import br.coom.muler.enumerated.Profile;
 import io.quarkus.security.identity.SecurityIdentity;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.validation.Valid;
 import javax.ws.rs.core.Response;
 import java.util.Optional;
 
@@ -19,10 +19,10 @@ public class LoginService {
     @Inject
     SecurityIdentity identity;
 
-    public Response register(@Valid CreateLoginDTO body) {
-        Optional<Login> entity = Login.findByEmail(body.email);
+    public Response register(CreateLoginDTO body) {
+        Optional<Login> optionalLogin = Login.findByEmail(body.email);
 
-        if (entity.isPresent())
+        if (optionalLogin.isPresent())
             return Response
                     .status(BAD_REQUEST.getStatusCode())
                     .entity("E-mail já cadastrado")
@@ -31,9 +31,23 @@ public class LoginService {
         if (!identity.hasRole(Profile._ADMIN))
             body.role = Profile.USER;
 
-        Login.save(body);
+        Login entity = Login.save(body);
+
+        User.save(entity);
 
         return Response.ok().build();
+    }
+
+    public Response login() {
+        Optional<User> optionalUser = User.findByEmail(identity.getPrincipal().getName());
+
+        if (optionalUser.isEmpty())
+            return Response
+                    .status(BAD_REQUEST.getStatusCode())
+                    .entity("E-mail já cadastrado")
+                    .build();
+
+        return Response.ok(optionalUser.get()).build();
     }
 
     public Response remove(Long id) {

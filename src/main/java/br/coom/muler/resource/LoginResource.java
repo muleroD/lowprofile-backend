@@ -29,6 +29,13 @@ public class LoginResource {
         return service.register(login);
     }
 
+    @POST
+    @RolesAllowed({Profile._ADMIN, Profile._USER})
+    @Transactional
+    public Response login() {
+        return service.login();
+    }
+
     @DELETE
     @Path("/remove/{id}")
     @RolesAllowed(Profile._ADMIN)
