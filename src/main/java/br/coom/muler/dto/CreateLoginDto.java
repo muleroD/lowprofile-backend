@@ -4,7 +4,7 @@ import br.coom.muler.enumerated.Profile;
 
 import javax.validation.constraints.Email;
 
-public class CreateLoginDTO {
+public class CreateLoginDto {
 
     @Email
     public String email;

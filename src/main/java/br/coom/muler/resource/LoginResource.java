@@ -1,6 +1,6 @@
 package br.coom.muler.resource;
 
-import br.coom.muler.dto.CreateLoginDTO;
+import br.coom.muler.dto.CreateLoginDto;
 import br.coom.muler.enumerated.Profile;
 import br.coom.muler.service.LoginService;
 
@@ -25,7 +25,7 @@ public class LoginResource {
     @Path("/register")
     @PermitAll
     @Transactional
-    public Response register(@Valid CreateLoginDTO login) {
+    public Response register(@Valid CreateLoginDto login) {
         return service.register(login);
     }
 

@@ -1,9 +1,10 @@
 package br.coom.muler.service;
 
-import br.coom.muler.dto.CreateLoginDTO;
+import br.coom.muler.dto.CreateLoginDto;
 import br.coom.muler.entity.Login;
 import br.coom.muler.entity.User;
 import br.coom.muler.enumerated.Profile;
+import br.coom.muler.mapper.UserMapper;
 import io.quarkus.security.identity.SecurityIdentity;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -19,7 +20,10 @@ public class LoginService {
     @Inject
     SecurityIdentity identity;
 
-    public Response register(CreateLoginDTO body) {
+    @Inject
+    UserMapper userMapper;
+
+    public Response register(CreateLoginDto body) {
         Optional<Login> optionalLogin = Login.findByEmail(body.email);
 
         if (optionalLogin.isPresent())
@@ -47,7 +51,7 @@ public class LoginService {
                     .entity("E-mail já cadastrado")
                     .build();
 
-        return Response.ok(optionalUser.get()).build();
+        return Response.ok(userMapper.toDto(optionalUser.get())).build();
     }
 
     public Response remove(Long id) {

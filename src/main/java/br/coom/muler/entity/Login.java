@@ -1,6 +1,6 @@
 package br.coom.muler.entity;
 
-import br.coom.muler.dto.CreateLoginDTO;
+import br.coom.muler.dto.CreateLoginDto;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.security.jpa.Password;
@@ -26,7 +26,7 @@ public class Login extends PanacheEntity {
         return find("email", email).firstResultOptional();
     }
 
-    public static Login save(CreateLoginDTO login) {
+    public static Login save(CreateLoginDto login) {
         Login entity = new Login();
 
         entity.email = login.email;
